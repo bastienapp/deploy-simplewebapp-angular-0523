@@ -6,11 +6,11 @@ WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY . /usr/src/app
 RUN npm install
-RUN npm run build
+RUN ng build --output-path=dist
 
 # production environment
 FROM nginx:1.24
-COPY --from=builder /usr/src/app/dist/simplewebapp-frontend/ /usr/share/nginx/html
+COPY --from=builder /usr/src/app/dist/ /usr/share/nginx/html
 COPY ./default.conf /etc/nginx/conf.d/
 EXPOSE 4200
 CMD ["nginx", "-g", "daemon off;"]
